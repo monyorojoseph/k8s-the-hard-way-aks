@@ -11,10 +11,9 @@ terraform {
     }
   }
 }
-
 provider "azurerm" {
   features {
-    key_vault {
-    }
+    # key_vault {
+    # }
   }
 }

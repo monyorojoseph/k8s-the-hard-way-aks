@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loginapp-task
+  labels:
+    app: loginapp-task
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: loginapp-task
+  template:
+    metadata:
+      labels:
+        app: loginapp-task
+    spec:
+      containers:
+      - name: tasks
+        image: monyorojoseph/loginapp
+        command: ["python", "manage.py", "run_huey"]
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        env:
+        # - name: ALLOWED_HOSTS
+        #   value: loginapp-svc localhost 127.0.0.1
+        - name: SECRET_KEY
+          value: 7a46b437b5d9ddbe9799b298b0f1237474182c98f618f24475a35e7be4a03812
+        - name: DB_URL
+          value: postgres://postgres:postgres@postgres-db:5432/loginapp
+        - name: DEBUG
+          value: 'False'
+        - name: EMAIL_HOST
+          value: smtp.gmail.com
+        - name: EMAIL_HOST_USER
+          value: xxxx@gmail.com
+        - name: EMAIL_HOST_PASSWORD
+          value: yyyyy
+        - name: REDIS_URL
+          value: redis://redis:6379/?db=1
+          
+        # livenessProbe:
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 15
+        #   failureThreshold: 1
+        #   httpGet:
+        #     path: /
+        #     port: 8000
+
+        # readinessProbe:
+        #   tcpSocket:
+        #     port: 8000
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 10
+        
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 8000
+        #   initialDelaySeconds: 15
+        #   failureThreshold: 1
+        #   periodSeconds: 10
+
+          
